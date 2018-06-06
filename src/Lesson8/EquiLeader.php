@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 /**
  * EquiLeader
@@ -11,31 +11,15 @@ include '../../Tests.class.php';
 function solution($A) {
     $sizeOfA = sizeof($A);
 
-    $candidate = array();
-    $candidateIndex = 0;
-
-    $candidate[$candidateIndex] = $A[0];
-    for($i=1; $i<$sizeOfA; $i++){
-        if($candidateIndex > -1 && $A[$i] != $candidate[$candidateIndex]){
-            array_pop($candidate);
-            $candidateIndex--;
-        }else{
-            array_push($candidate, $A[$i]);
-            $candidateIndex++;
-        }
+    $count = array_count_values($A);
+    $leader = 0;
+    $leader_count = 0; 
+    
+    for($i = 0; $i < $sizeOfA;$i++){
+       if($count[$A[$i]] > $N/2){ $leader = $A[$i]; $leader_count = $count[$A[$i]]; break; }
+       continue;
     }
-    if(isset($candidate[0])) {
-        $leader = $candidate[0];
-    }else{
-        return 0;
-    }
-    $totalLeaders = 0;
-    for($i=0; $i<$sizeOfA; $i++) {
-        if ($A[$i] == $leader) {
-            $totalLeaders++;
-        }
-    }
-
+    
     $lNumOfLeaders = 0;
     $totalEquiLeaders = 0;
     for($i=0; $i<$sizeOfA; $i++){
@@ -44,7 +28,7 @@ function solution($A) {
         if($A[$i] == $leader){
             $lNumOfLeaders++;
         }
-        $rNumOfLeaders = $totalLeaders - $lNumOfLeaders;
+        $rNumOfLeaders = $leader_count - $lNumOfLeaders;
         if($lNumOfLeaders > $lHalfArray && $rNumOfLeaders > $rHalfArray){
             $totalEquiLeaders++;
         }
